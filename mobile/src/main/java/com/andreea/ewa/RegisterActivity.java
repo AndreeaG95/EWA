@@ -61,8 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                // TODO: add some pass security(length, char..).
-
+                // TODO: add some pass security(length, char..). and check if email not already registered.
                 firebaseAuth.createUserWithEmailAndPassword(e, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

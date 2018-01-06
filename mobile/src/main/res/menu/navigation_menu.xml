@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Account" />
+    <item android:title="Appointements" />
+    <item android:title="Health" />
+    <item android:title="Graphs" />
+    <item android:title="Settings" />
+    <item android:title="Log out" />
+</menu>

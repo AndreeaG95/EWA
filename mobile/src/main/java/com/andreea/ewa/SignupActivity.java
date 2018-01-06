@@ -37,13 +37,14 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        
+
+        setContentView(R.layout.activity_signup);
+
         email = (EditText) findViewById(R.id.eEmail);
         password = (EditText) findViewById(R.id.ePassword);
         tStatus = (TextView) findViewById(R.id.tStatus);
@@ -124,6 +125,7 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    // TODO: add forgot password button.
     public void clicked(View v) {
         switch (v.getId()) {
             case R.id.bRegister:
