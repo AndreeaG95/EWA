@@ -1,1 +1,2 @@
-# MSA
+# EWA
+Bachelor diploma project
