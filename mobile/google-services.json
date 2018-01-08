@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "829319740400",
+    "firebase_url": "https://ewa-a-b679f.firebaseio.com",
+    "project_id": "ewa-a-b679f",
+    "storage_bucket": "ewa-a-b679f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829319740400:android:4ca4369795c2d9ad",
+        "android_client_info": {
+          "package_name": "com.andreea.ewa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829319740400-hhv6rj8p4p0se3hj0mtb90u1v9umancq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.andreea.ewa",
+            "certificate_hash": "6ba6dda91e51b97482ea5de932fb435318fe0a4e"
+          }
+        },
+        {
+          "client_id": "829319740400-9sqak378a7hc1dukqf8qdqocfljrcip6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARn9xDK2jQRskzaNvofxIG9jtilg5vuyI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829319740400-9sqak378a7hc1dukqf8qdqocfljrcip6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,12 @@
 package com.andreea.ewa;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.internal.NavigationMenu;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     //UI.
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
+    private NavigationView menu;
 
     // Firebase authentication
     private FirebaseAuth mAuth;
@@ -77,13 +82,42 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        menu = (NavigationView) findViewById(R.id.nMenu);
         drawerLayout = (DrawerLayout) findViewById(R.id.lDrawer);
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
 
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Sign out action.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to sign out?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                        mAuth.signOut();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+
+        menu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case(R.id.logOut):
+                        alert.show();
+                }
+                return true;
+            }
+        });
     }
 
     private void attachDBListener(String uid) {
@@ -121,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Retreive result from Signup activity.
+    // Retreive result from Sigin activity.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQ_SIGNIN) {
