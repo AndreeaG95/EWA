@@ -33,10 +33,10 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        register = (Button) findViewById(R.id.bRegisterNew);
-        email = (EditText) findViewById(R.id.eEmail1);
-        password = (EditText) findViewById(R.id.ePass1);
-        password2 = (EditText) findViewById(R.id.ePass2);
+        register = findViewById(R.id.bRegisterNew);
+        email = findViewById(R.id.eEmail1);
+        password =  findViewById(R.id.ePass1);
+        password2 = findViewById(R.id.ePass2);
 
         // init firebase authentication.
         firebaseAuth = firebaseAuth.getInstance();
@@ -61,20 +61,22 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                // TODO: add some pass security(length, char..). and check if email not already registered.
                 firebaseAuth.createUserWithEmailAndPassword(e, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "User successfully created", Toast.LENGTH_SHORT).show();
+
+                            // Make user sign in
+                            firebaseAuth.signOut();
+
+                            finish();
                         }else{
-                            Toast.makeText(getApplicationContext(), "Could not create user", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
 
-                // TODO: closes to fast, needs fix.
-                finish();
                 break;
         }
     }

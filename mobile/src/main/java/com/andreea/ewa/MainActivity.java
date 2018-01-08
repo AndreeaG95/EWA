@@ -97,7 +97,10 @@ public class MainActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        finish();
+                        // TODO: reset main activity on sign out
+                        // calling finish closes the app on a sign in after a sign out
+                        // not calling finish() leaves the activity in the same state as when the sign out happened
+                        //finish();
                         mAuth.signOut();
                     }
                 })
@@ -210,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // get data from intent
                 String user = data.getStringExtra("user");
-                String pass = data.getStringExtra("pass");
                 // ...
             } else if (resultCode == RESULT_CANCELED) {
                 // data was not retrieved
