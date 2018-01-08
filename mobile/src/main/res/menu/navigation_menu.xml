@@ -3,15 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Account"
-        android:icon="@mipmap/person"/>
-    <item android:title="Appointements"
-        android:icon="@mipmap/calendar3"/>
-    <item android:title="Health" />
-    <item android:title="Graphs" />
-    <item android:title="Settings"
-        android:icon="@mipmap/settings"/>
-    <item android:title="Log out"
-        android:id="@+id/logOut"
-        android:icon="@mipmap/logout"/>
+    <group tools:checkableBehavior="single">
+        <item
+            android:id="@+id/account"
+            android:checkable="true"
+            android:icon="@mipmap/person"
+            android:title="Account" />
+        <item
+            android:id="@+id/appointments"
+            android:checkable="true"
+            android:icon="@mipmap/calendar3"
+            android:title="Appointements" />
+        <item
+            android:id="@+id/health"
+            android:checkable="true"
+            android:icon="@mipmap/heartbeat"
+            android:title="Health" />
+        <item android:title="Graphs" />
+        <item
+            android:id="@+id/settings"
+            android:checkable="true"
+            android:icon="@mipmap/settings"
+            android:title="Settings" />
+        <item
+            android:id="@+id/logOut"
+            android:checkable="true"
+            android:icon="@mipmap/logout"
+            android:title="Log out" />
+    </group>
 </menu>

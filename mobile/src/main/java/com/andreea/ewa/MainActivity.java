@@ -1,21 +1,19 @@
 package com.andreea.ewa;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,8 +22,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.security.SecurityPermission;
 
 /**
  * Created by andreeagb.
@@ -38,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView menu;
+    private android.support.v4.app.FragmentTransaction fragmentTransaction;
 
     // Firebase authentication
     private FirebaseAuth mAuth;
@@ -67,10 +64,10 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
-                    TextView tLoginDetail = (TextView) findViewById(R.id.tLoginDetail);
-                    TextView tUser = (TextView) findViewById(R.id.tUser);
-                    tLoginDetail.setText("Firebase ID: " + user.getUid());
-                    tUser.setText("Email: " + user.getEmail());
+                    //TextView tLoginDetail = (TextView) findViewById(R.id.tLoginDetail);
+                    //TextView tUser = (TextView) findViewById(R.id.tUser);
+                   // tLoginDetail.setText("Firebase ID: " + user.getUid());
+                   // tUser.setText("Email: " + user.getEmail());
 
 
                     AppState.get().setUserId(user.getUid());
@@ -91,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         // Sign out action.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to sign out?")
@@ -108,16 +106,56 @@ public class MainActivity extends AppCompatActivity {
                 });
         final AlertDialog alert = builder.create();
 
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_container, new HealthFragment());
+        fragmentTransaction.commit();
+        getSupportActionBar().setTitle("Health");
+
+        // Menu switch.
         menu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case(R.id.logOut):
                         alert.show();
+                        break;
+                    case(R.id.account):
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, new AccountFragment());
+                        fragmentTransaction.commit();
+                        getSupportActionBar().setTitle("My account");
+                        menuItem.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        break;
+                    case(R.id.settings):
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, new SettingsFragment());
+                        fragmentTransaction.commit();
+                        getSupportActionBar().setTitle("Settings");
+                        menuItem.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        break;
+                    case(R.id.health):
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, new HealthFragment());
+                        fragmentTransaction.commit();
+                        getSupportActionBar().setTitle("Health");
+                        menuItem.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        break;
+                    case(R.id.appointments):
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, new AppointmentsFragment());
+                        fragmentTransaction.commit();
+                        getSupportActionBar().setTitle("Appointments");
+                        menuItem.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        break;
                 }
                 return true;
             }
         });
+
     }
 
     private void attachDBListener(String uid) {
