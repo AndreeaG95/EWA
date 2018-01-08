@@ -45,10 +45,10 @@ public class SignupActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_signup);
 
-        email = (EditText) findViewById(R.id.eEmail);
-        password = (EditText) findViewById(R.id.ePassword);
-        tStatus = (TextView) findViewById(R.id.tStatus);
-        tDetail = (TextView) findViewById(R.id.tDetail);
+        email = findViewById(R.id.eEmail);
+        password =  findViewById(R.id.ePassword);
+        tStatus =  findViewById(R.id.tStatus);
+        tDetail =  findViewById(R.id.tDetail);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -56,7 +56,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void registerUser(){
         Intent intent = new Intent(this, RegisterActivity.class);
-        SignupActivity.this.startActivity(intent);
+        this.startActivity(intent);
 
     }
     public boolean validateForm(){
@@ -98,15 +98,26 @@ public class SignupActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+
+                            // Pass signed in successfully and user email to listening activity
+                            Intent intent = new Intent();
+                            intent.putExtra("user", email.getText().toString());
+                            setResult(RESULT_OK, intent);
+
+                            // Finish activity
+                            finish();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(SignupActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            password.setText("");
                             updateUI(null);
                         }
                     }
                 });
+
     }
 
     private void updateUI(FirebaseUser user) {
@@ -133,13 +144,6 @@ public class SignupActivity extends AppCompatActivity {
                 break;
             case R.id.bLogin:
                 signIn(email.getText().toString(), password.getText().toString());
-
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("user", email.getText().toString());
-                intent.putExtra("pass", password.getText().toString());
-                setResult(RESULT_OK);
-                finish();
-
                 break;
         }
     }
