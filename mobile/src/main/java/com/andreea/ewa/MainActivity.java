@@ -13,7 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle toggle;
     private NavigationView menu;
     private android.support.v4.app.FragmentTransaction fragmentTransaction;
+    private Toolbar mToolbar;
 
     // Firebase authentication
     private FirebaseAuth mAuth;
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
@@ -81,13 +81,15 @@ public class MainActivity extends AppCompatActivity {
 
         menu = (NavigationView) findViewById(R.id.nMenu);
         drawerLayout = (DrawerLayout) findViewById(R.id.lDrawer);
+        mToolbar = (Toolbar) findViewById(R.id.nav_bar);
+
+        setSupportActionBar(mToolbar);
 
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         // Sign out action.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -148,6 +150,14 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTransaction.replace(R.id.main_container, new AppointmentsFragment());
                         fragmentTransaction.commit();
                         getSupportActionBar().setTitle("Appointments");
+                        menuItem.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        break;
+                    case (R.id.graph):
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, new GraphFragment());
+                        fragmentTransaction.commit();
+                        getSupportActionBar().setTitle("Charts");
                         menuItem.setChecked(true);
                         drawerLayout.closeDrawers();
                         break;

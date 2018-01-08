@@ -11,6 +11,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include layout="@layout/navigation_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </include>
         <FrameLayout
             android:id="@+id/main_container"
             android:layout_width="match_parent"
