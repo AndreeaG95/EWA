@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private static final int REQ_SIGNIN = 3;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference databaseReference = database.getReference();
         AppState.get().setDatabaseReference(databaseReference);
 
-        databaseReference.child("users").child(uid).addChildEventListener(new ChildEventListener() {
+        databaseReference.child("Patients").child(uid).addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
