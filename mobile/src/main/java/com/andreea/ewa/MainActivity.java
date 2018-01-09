@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.support.v7.widget.Toolbar;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         menu = (NavigationView) findViewById(R.id.nMenu);
         drawerLayout = (DrawerLayout) findViewById(R.id.lDrawer);
         mToolbar = (Toolbar) findViewById(R.id.nav_bar);
-
+        mToolbar.setTitleTextColor(getColor(R.color.primaryTextColor));
         setSupportActionBar(mToolbar);
 
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);

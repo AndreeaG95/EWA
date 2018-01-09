@@ -2,12 +2,223 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/secondaryLightColor"
     tools:context="com.andreea.ewa.HealthFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="HEALTH FRAGMENT" />
+        tools:context="com.demotxt.droidsrce.homedashboard.Home"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="#fcfcfc"
+        android:gravity="center"
+        android:id="@+id/ll">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:clipToPadding="false">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/heartRate"
+                android:layout_width="160dp"
+                android:layout_height="170dp"
+                android:layout_margin="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/secondaryColor">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/cercshape"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_like" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Heart Rate"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/temperature"
+                android:layout_width="160dp"
+                android:layout_height="170dp"
+                android:layout_margin="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/secondaryColor">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/cercshape"
+                        android:src="@drawable/ic_thermometer"
+                        android:padding="10dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Temperature"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:clipToPadding="false">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/medicine"
+                android:layout_width="160dp"
+                android:layout_height="170dp"
+                android:layout_margin="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/secondaryColor">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/cercshape"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_pills" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Medicine"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/illness"
+                android:layout_width="160dp"
+                android:layout_height="170dp"
+                android:layout_margin="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/secondaryColor">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/cercshape"
+                        android:src="@drawable/illness"
+                        android:padding="10dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Illness"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:clipToPadding="false">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/prescriptions"
+                android:layout_width="160dp"
+                android:layout_height="170dp"
+                android:layout_margin="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/secondaryColor">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/cercshape"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_prescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Prescriptions"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/doctor"
+                android:layout_width="160dp"
+                android:layout_height="170dp"
+                android:layout_margin="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/secondaryColor">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/cercshape"
+                        android:src="@drawable/ic_doctor"
+                        android:padding="10dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Doctor"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+    </LinearLayout>
 </FrameLayout>
