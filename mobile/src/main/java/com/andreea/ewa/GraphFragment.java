@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -81,8 +82,11 @@ public class GraphFragment extends Fragment {
         mChart.getAxisRight().setEnabled(false);
 
         // add data
-        setData(MainActivity.getTemperatures().size());
-
+        if(MainActivity.getTemperatures().isEmpty()){
+            Toast.makeText(view.getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+        }else {
+            setData(MainActivity.getTemperatures().size());
+        }
         mChart.invalidate();
     }
 
