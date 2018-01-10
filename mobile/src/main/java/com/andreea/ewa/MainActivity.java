@@ -239,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 // ...
             } else if (resultCode == RESULT_CANCELED) {
                 // data was not retrieved
+                finish();
             }
         }
     }
