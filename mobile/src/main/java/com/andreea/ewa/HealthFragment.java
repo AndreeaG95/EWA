@@ -1,14 +1,22 @@
 package com.andreea.ewa;
 
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.firebase.database.DatabaseReference;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -16,25 +24,35 @@ import android.view.ViewGroup;
  */
 public class HealthFragment extends Fragment implements View.OnClickListener{
 
-    private CardView temperature, heartRate;
+    private CardView cTemperature, heartRate;
+    private Button okTemp, cancelTemp;
+    private EditText temperatureVal;
 
     // Ignore that is desprecated.
     private Camera mCamera;
 
     public HealthFragment() {
         // Required empty public constructor
+        // Inflate the layout for this fragment
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-       // temperature = getView().findViewById(R.id.temperature);
-        //heartRate = getView().findViewById(R.id.heartRate);
+
+        return inflater.inflate(R.layout.fragment_health, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        cTemperature = getView().findViewById(R.id.temperature);
+        heartRate = getView().findViewById(R.id.heartRate);
+        okTemp = getView().findViewById(R.id.okTemp);
+
+        cTemperature.setOnClickListener(this);
 
         mCamera = getCameraInstance(); // Create an instance of Camera
-        return inflater.inflate(R.layout.fragment_health, container, false);
     }
 
     public static Camera getCameraInstance() {
@@ -48,15 +66,50 @@ public class HealthFragment extends Fragment implements View.OnClickListener{
         return c; // returns null if camera is unavailable
     }
 
-    private void getTemperature(){
+    public void getTemperature(View v){
+        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(v.getContext());
+        final View temperatureView = getLayoutInflater().inflate(R.layout.temperature_layout, null);
+        mBuilder.setView(temperatureView);
+        final AlertDialog dialog = mBuilder.create();
 
+        cancelTemp = temperatureView.findViewById(R.id.cancelTemp);
+        temperatureVal = temperatureView.findViewById(R.id.eTemp);
+        okTemp = temperatureView.findViewById(R.id.okTemp);
+        dialog.show();
+
+        cancelTemp.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+        okTemp.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                String user = AppState.get().getUserId();
+                Float temp = Float.valueOf(temperatureVal.getText().toString());
+                //Adding values
+                DatabaseReference newRef = AppState.get().getDatabaseReference().child("Patients").child(user).child("Temperature").child(getCurrentTimeDate());
+                newRef.setValue(temp);
+                dialog.cancel();
+            }
+        });
+    }
+
+    public static String getCurrentTimeDate() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date now = new Date();
+        return sdfDate.format(now);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.temperature:
-                getTemperature();
+                getTemperature(v);
                 break;
             case R.id.heartRate:
                 break;

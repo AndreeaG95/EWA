@@ -1,5 +1,7 @@
 package com.andreea.ewa;
 
+import android.widget.Spinner;
+
 import com.google.firebase.database.DatabaseReference;
 
 /**
@@ -31,5 +33,9 @@ public class AppState {
 
     public void setUserId(String id){
         this.userId = id;
+    }
+
+    public String getUserId(){
+        return userId;
     }
 }
