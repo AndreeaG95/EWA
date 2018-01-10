@@ -2,6 +2,7 @@ package com.andreea.ewa;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,6 +21,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.w3c.dom.Text;
+
 public class SignupActivity extends AppCompatActivity {
 
     private static final String TAG = "LOGIN";
@@ -28,8 +31,8 @@ public class SignupActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
 
-    private TextView tStatus;
-    private TextView tDetail;
+    //private TextView tStatus;
+    //private TextView tDetail;
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -45,10 +48,10 @@ public class SignupActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_signup);
 
-        email = findViewById(R.id.eEmail);
-        password =  findViewById(R.id.ePassword);
-        tStatus =  findViewById(R.id.tStatus);
-        tDetail =  findViewById(R.id.tDetail);
+        email = ((TextInputLayout)findViewById(R.id.eEmail)).getEditText();
+        password =  ((TextInputLayout)findViewById(R.id.ePassword)).getEditText();
+       // tStatus =  findViewById(R.id.tStatus);
+        //tDetail =  findViewById(R.id.tDetail);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -57,7 +60,6 @@ public class SignupActivity extends AppCompatActivity {
     private void registerUser(){
         Intent intent = new Intent(this, RegisterActivity.class);
         this.startActivity(intent);
-
     }
     public boolean validateForm(){
         boolean valid = true;
@@ -70,10 +72,11 @@ public class SignupActivity extends AppCompatActivity {
             email.setError(null);
         }
 
+
         String pass = password.getText().toString();
         if (TextUtils.isEmpty(pass)) {
-            password.setError("Required.");
             valid = false;
+            password.setError("Required.");
         } else {
             password.setError(null);
         }
@@ -110,7 +113,7 @@ public class SignupActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(SignupActivity.this, "Authentication failed.",
+                            Toast.makeText(SignupActivity.this, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                             password.setText("");
                             updateUI(null);
@@ -122,21 +125,32 @@ public class SignupActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            tStatus.setText("Email user: " + user.getEmail());
-            tDetail.setText("Firebase user: " + user.getUid());
+            Toast.makeText(SignupActivity.this, "Signed in.",
+                    Toast.LENGTH_SHORT).show();
+           // tStatus.setText("Email user: " + user.getEmail());
+            //tDetail.setText("Firebase user: " + user.getUid());
 
             //findViewById(R.id.lSignIn).setVisibility(View.GONE);
             //findViewById(R.id.email_password_fields).setVisibility(View.GONE);
         } else {
-            tStatus.setText("Signed out");
-            tDetail.setText(null);
+
+           // tStatus.setText("Signed out");
+           // tDetail.setText(null);
 
             //findViewById(R.id.lSignIn).setVisibility(View.VISIBLE);
             //findViewById(R.id.email_password_fields).setVisibility(View.VISIBLE);
         }
     }
 
-    // TODO: add forgot password button.
+    public void forgotPassword() {
+
+
+        Intent intent = new Intent(this, ForgotPasswordActivity.class);
+        this.startActivity(intent);
+
+
+    }
+
     public void clicked(View v) {
         switch (v.getId()) {
             case R.id.bRegister:
@@ -144,6 +158,10 @@ public class SignupActivity extends AppCompatActivity {
                 break;
             case R.id.bLogin:
                 signIn(email.getText().toString(), password.getText().toString());
+                break;
+
+            case R.id.tForgot:
+                forgotPassword();
                 break;
         }
     }

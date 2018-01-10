@@ -30,8 +30,8 @@ public class HealthFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        temperature = getView().findViewById(R.id.temperature);
-        heartRate = getView().findViewById(R.id.heartRate);
+       // temperature = getView().findViewById(R.id.temperature);
+        //heartRate = getView().findViewById(R.id.heartRate);
 
         mCamera = getCameraInstance(); // Create an instance of Camera
         return inflater.inflate(R.layout.fragment_health, container, false);

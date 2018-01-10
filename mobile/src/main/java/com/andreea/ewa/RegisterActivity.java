@@ -1,8 +1,11 @@
 package com.andreea.ewa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +26,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
     private EditText password2;
-    private Button register;
 
     // Firebase auth.
     FirebaseAuth firebaseAuth;
@@ -33,29 +35,43 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        register = findViewById(R.id.bRegisterNew);
-        email = findViewById(R.id.eEmail1);
-        password =  findViewById(R.id.ePass1);
-        password2 = findViewById(R.id.ePass2);
+        email = ((TextInputLayout)findViewById(R.id.eEmail1)).getEditText();
+        password =  ((TextInputLayout)findViewById(R.id.ePass1)).getEditText();
+        password2 = ((TextInputLayout)findViewById(R.id.ePass2)).getEditText();
 
         // init firebase authentication.
-        firebaseAuth = firebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
+    public boolean validateForm(){
+        boolean valid = true;
+
+        String e = email.getText().toString();
+        if (TextUtils.isEmpty(e)) {
+            email.setError("Required.");
+            valid = false;
+        } else {
+            email.setError(null);
+        }
+
+
+        String pass = password.getText().toString();
+        if (TextUtils.isEmpty(pass)) {
+            valid = false;
+            password.setError("Required.");
+        } else {
+            password.setError(null);
+        }
+
+        return valid;
+    }
     public void click(View v) {
         switch (v.getId()) {
             case R.id.bRegisterNew:
                 String e = email.getText().toString().trim();
                 String pass = password.getText().toString().trim();
-                if(e.isEmpty()) {
-                    email.setError("Required.");
-                    break;
-                }
-
-                if(pass.isEmpty()){
-                    password.setError("Required.");
-                    break;
-                }
+               if(!validateForm())
+                   break;
 
                 if(!pass.equals(password2.getText().toString().trim())){
                     Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
