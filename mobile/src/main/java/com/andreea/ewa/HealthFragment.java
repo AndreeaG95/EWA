@@ -90,7 +90,7 @@ public class HealthFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View v) {
                 String user = AppState.get().getUserId();
-                Float temp = Float.valueOf(temperatureVal.getText().toString());
+                double temp = Double.valueOf(temperatureVal.getText().toString());
                 //Adding values
                 DatabaseReference newRef = AppState.get().getDatabaseReference().child("Patients").child(user).child("Temperature").child(getCurrentTimeDate());
                 newRef.setValue(temp);

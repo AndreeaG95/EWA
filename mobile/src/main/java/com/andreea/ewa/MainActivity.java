@@ -10,8 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +23,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by andreeagb.
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private static final int REQ_SIGNIN = 3;
+
+    private static final List<Temperature> temperatures = new ArrayList<>();
 
 
     @Override
@@ -144,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case(R.id.health):
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.main_container, new HealthFragment());
+                        Fragment health = new HealthFragment();
+                        fragmentTransaction.replace(R.id.main_container, health);
                         fragmentTransaction.commit();
                         getSupportActionBar().setTitle("Health");
                         menuItem.setChecked(true);
@@ -183,7 +189,22 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                // Temperature update.
+                for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
 
+                    try {
+                        Log.d("CHILD", tempSnapshot.getKey());
+                        String date = tempSnapshot.getKey();
+                        double value2 = -1;
+                        if (tempSnapshot.getValue() instanceof Long)
+                            value2 = ((Long)tempSnapshot.getValue()).doubleValue();
+                        else
+                            value2 = (double) tempSnapshot.getValue();
+                        temperatures.add(new Temperature(date, value2));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
@@ -220,6 +241,10 @@ public class MainActivity extends AppCompatActivity {
                 // data was not retrieved
             }
         }
+    }
+
+    public static List<Temperature> getTemperatures(){
+        return temperatures;
     }
 
     @Override

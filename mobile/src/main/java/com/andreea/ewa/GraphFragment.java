@@ -1,11 +1,29 @@
 package com.andreea.ewa;
 
 
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IFillFormatter;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -13,6 +31,8 @@ import android.view.ViewGroup;
  */
 public class GraphFragment extends Fragment {
 
+    private LineChart mChart;
+    private int mFillColor = Color.argb(150, 51, 181, 229);
 
     public GraphFragment() {
         // Required empty public constructor
@@ -25,5 +45,104 @@ public class GraphFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_graph, container, false);
     }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        mChart = (LineChart) view.findViewById(R.id.chart1);
+        mChart.setBackgroundColor(Color.WHITE);
+        mChart.setGridBackgroundColor(Color.WHITE);
+        mChart.setDrawGridBackground(true);
+
+        mChart.setDrawBorders(true);
+        mChart.canScrollVertically(30);
+
+        // description text
+        mChart.getDescription().setEnabled(true);
+        Description des = new Description();
+        des.setText("Temperature");
+        mChart.setDescription(des);
+
+        // if disabled, scaling can be done on x- and y-axis separately
+        mChart.setPinchZoom(false);
+
+        Legend l = mChart.getLegend();
+        l.setEnabled(false);
+
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setEnabled(false);
+
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setAxisMaximum(50f);
+        leftAxis.setAxisMinimum(20f);
+        leftAxis.setDrawAxisLine(false);
+        leftAxis.setDrawZeroLine(false);
+        leftAxis.setDrawGridLines(false);
+
+        mChart.getAxisRight().setEnabled(false);
+
+        // add data
+        setData(MainActivity.getTemperatures().size());
+
+        mChart.invalidate();
+    }
+
+    public void setData(int count){
+        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+        Log.d("SETDATA", String.valueOf(count));
+        for (int i = 0; i < count; i++) {
+            float val = (float) MainActivity.getTemperatures().get(i).getValue();
+            yVals1.add(new Entry(i, val));
+        }
+
+
+        LineDataSet set1;
+
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+
+            set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
+            set1.setValues(yVals1);
+            mChart.getData().notifyDataChanged();
+            mChart.notifyDataSetChanged();
+
+        } else {
+
+            // create a dataset and give it a type
+            set1 = new LineDataSet(yVals1, "DataSet 1");
+
+            set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+            set1.setColor(R.color.primaryColor);
+            set1.setDrawCircles(false);
+            set1.setLineWidth(2f);
+            set1.setCircleRadius(3f);
+            set1.setFillAlpha(255);
+            set1.setDrawFilled(true);
+            set1.setFillColor(Color.WHITE);
+
+            set1.setHighLightColor(R.color.primaryColor);
+            set1.setDrawCircleHole(true);
+            set1.setFillFormatter(new IFillFormatter() {
+
+                @Override
+                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                    return mChart.getAxisLeft().getAxisMinimum();
+
+                }
+
+            });
+
+            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            dataSets.add(set1); // add the datasets
+
+            // create a data object with the datasets
+            LineData data = new LineData(dataSets);
+            data.setDrawValues(false);
+            // set data
+            mChart.setData(data);
+
+        }
+    }
+
+
 
 }
