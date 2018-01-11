@@ -35,7 +35,7 @@ public class AppState {
         this.userId = id;
     }
 
-    public String getUserId(){
+    public static String getUserId(){
         return userId;
     }
 }

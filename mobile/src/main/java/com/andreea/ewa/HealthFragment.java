@@ -2,6 +2,7 @@ package com.andreea.ewa;
 
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -24,7 +25,7 @@ import java.util.Date;
  */
 public class HealthFragment extends Fragment implements View.OnClickListener{
 
-    private CardView cTemperature, heartRate;
+    private CardView cTemperature, heartRate, cMedicine;
     private Button okTemp, cancelTemp;
     private EditText temperatureVal;
 
@@ -47,10 +48,12 @@ public class HealthFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         cTemperature = getView().findViewById(R.id.temperature);
+        cMedicine = getView().findViewById(R.id.medicine);
         heartRate = getView().findViewById(R.id.heartRate);
         okTemp = getView().findViewById(R.id.okTemp);
 
         cTemperature.setOnClickListener(this);
+        cMedicine.setOnClickListener(this);
 
         mCamera = getCameraInstance(); // Create an instance of Camera
     }
@@ -112,6 +115,10 @@ public class HealthFragment extends Fragment implements View.OnClickListener{
                 getTemperature(v);
                 break;
             case R.id.heartRate:
+                break;
+            case R.id.medicine:
+                Intent intent = new Intent(getContext(), MedicineActivity.class);
+                this.startActivity(intent);
                 break;
         }
     }
