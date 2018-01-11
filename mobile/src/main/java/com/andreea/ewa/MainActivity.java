@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                    // tUser.setText("Email: " + user.getEmail());
 
                     AppState.get().setUserId(user.getUid());
-                    attachDBListener(user.getUid());
+                    attachDBListeners(user.getUid());
                 } else {
                     // If user not signed in, start new activity.
                     startActivityForResult(new Intent(getApplicationContext(), SignupActivity.class), REQ_SIGNIN);
@@ -191,33 +191,38 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void attachDBListener(String uid) {
+    private void attachDBListeners(String uid) {
         // setup firebase database
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference();
         AppState.get().setDatabaseReference(databaseReference);
 
-        databaseReference.child("Patients").child(uid).addChildEventListener(new ChildEventListener() {
+
+        attachTemperatureListener(databaseReference, uid);
+    }
+
+    public void attachTemperatureListener(DatabaseReference databaseReference, String uid)
+    {
+        temperatures.clear();
+
+        databaseReference.child("Patients").child(uid).child("Temperature").addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 // Temperature update.
-                for (DataSnapshot tempSnapshot : dataSnapshot.getChildren()) {
-
-                    try {
-                        Log.d("CHILD", tempSnapshot.getKey());
-                        String date = tempSnapshot.getKey();
-                        double value2 = -1;
-                        if (tempSnapshot.getValue() instanceof Long)
-                            value2 = ((Long)tempSnapshot.getValue()).doubleValue();
+                try {
+                        String date = dataSnapshot.getKey();
+                        double value2;
+                        if (dataSnapshot.getValue() instanceof Long)
+                            value2 = ((Long)dataSnapshot.getValue()).doubleValue();
                         else
-                            value2 = (double) tempSnapshot.getValue();
+                            value2 = (double) dataSnapshot.getValue();
                         temperatures.add(new Temperature(date, value2));
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
                 }
             }
+
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -240,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     // Retreive result from Sigin activity.
     @Override

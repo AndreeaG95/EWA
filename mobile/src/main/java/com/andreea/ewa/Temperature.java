@@ -22,4 +22,8 @@ public class Temperature {
     public double getValue(){
         return value;
     }
+
+    public String toString() {
+        return date + " -- " + value.toString();
+    }
 }
