@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/secondaryColor">
 
 
         <LinearLayout
@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/darker_gray"
-                android:alpha ="0.5"                >
+                android:alpha ="0.3"                >
 
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:alpha="0.5"
+                android:alpha="0.3"
                 android:background="@android:color/darker_gray"
                 android:hint="Password"
                 app:passwordToggleEnabled="true">

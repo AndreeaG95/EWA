@@ -144,11 +144,8 @@ public class SignupActivity extends AppCompatActivity {
 
     public void forgotPassword() {
 
-
         Intent intent = new Intent(this, ForgotPasswordActivity.class);
         this.startActivity(intent);
-
-
     }
 
     public void clicked(View v) {

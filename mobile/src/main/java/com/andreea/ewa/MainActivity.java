@@ -2,8 +2,11 @@ package com.andreea.ewa;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,9 +15,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.support.v7.widget.Toolbar;
+import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,7 +36,6 @@ import java.util.List;
  * Created by andreeagb.
  */
 
-
 public class MainActivity extends AppCompatActivity {
 
     //UI.
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView menu;
     private android.support.v4.app.FragmentTransaction fragmentTransaction;
     private Toolbar mToolbar;
+    private Button edit;
 
     // Firebase authentication
     private FirebaseAuth mAuth;
@@ -47,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQ_SIGNIN = 3;
 
     private static final List<Temperature> temperatures = new ArrayList<>();
-
+    private static ConnectivityManager cm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                    // tLoginDetail.setText("Firebase ID: " + user.getUid());
                    // tUser.setText("Email: " + user.getEmail());
 
-
                     AppState.get().setUserId(user.getUid());
                     attachDBListener(user.getUid());
                 } else {
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         menu = (NavigationView) findViewById(R.id.nMenu);
+        edit = findViewById(R.id.editButton);
         drawerLayout = (DrawerLayout) findViewById(R.id.lDrawer);
         mToolbar = (Toolbar) findViewById(R.id.nav_bar);
         mToolbar.setTitleTextColor(getColor(R.color.primaryTextColor));
@@ -117,7 +122,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         final AlertDialog alert = builder.create();
+         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        edit.setVisibility(View.INVISIBLE);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_container, new HealthFragment());
         fragmentTransaction.commit();
@@ -132,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                         alert.show();
                         break;
                     case(R.id.account):
+                        edit.setVisibility(View.VISIBLE);
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new AccountFragment());
                         fragmentTransaction.commit();
@@ -140,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         break;
                     case(R.id.settings):
+                        edit.setVisibility(View.INVISIBLE);
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new SettingsFragment());
                         fragmentTransaction.commit();
@@ -148,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         break;
                     case(R.id.health):
+                        edit.setVisibility(View.INVISIBLE);
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         Fragment health = new HealthFragment();
                         fragmentTransaction.replace(R.id.main_container, health);
@@ -157,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         break;
                     case(R.id.appointments):
+                        edit.setVisibility(View.INVISIBLE);
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new AppointmentsFragment());
                         fragmentTransaction.commit();
@@ -165,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         break;
                     case (R.id.graph):
+                        edit.setVisibility(View.INVISIBLE);
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new GraphFragment());
                         fragmentTransaction.commit();
@@ -271,4 +283,31 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Check for internet connectivity.
+    public static boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+        NetworkInfo[] netInfo;
+        if (cm != null) {
+            netInfo = cm.getAllNetworkInfo();
+            for (NetworkInfo ni : netInfo) {
+                if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                    if (ni.isConnected())
+                        haveConnectedWifi = true;
+                if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                    if (ni.isConnected())
+                        haveConnectedMobile = true;
+            }
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    public void mainClick(View view){
+        switch (view.getId()){
+            case R.id.editButton:
+                Intent intent = new Intent(this, EditAccountActivity.class);
+                this.startActivity(intent);
+                break;
+        }
+    }
 }
