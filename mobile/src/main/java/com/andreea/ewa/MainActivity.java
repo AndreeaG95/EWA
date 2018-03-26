@@ -1,7 +1,6 @@
 package com.andreea.ewa;
 
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +19,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import com.andreea.ewa.healthPage.Temperature;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -28,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private android.support.v4.app.FragmentTransaction fragmentTransaction;
     private Toolbar mToolbar;
     private Button edit;
+    private ImageView profilePicture;
 
     // Firebase authentication
     private FirebaseAuth mAuth;
@@ -63,8 +66,12 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+        // Set up offline persistency.
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         // setup authentication
         mAuth = FirebaseAuth.getInstance();
+
         /*
         * Listen to any changes in the state of the user.
         * The listener  will fire when it is attached, and then every time a user logs in, out or his token expires.
@@ -85,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     attachDBListeners(user.getUid());
                 } else {
                     // If user not signed in, start new activity.
-                    startActivityForResult(new Intent(getApplicationContext(), SignupActivity.class), REQ_SIGNIN);
+                    startActivityForResult(new Intent(getApplicationContext(), LoginActivity.class), REQ_SIGNIN);
                 }
             }
         };
@@ -199,6 +206,35 @@ public class MainActivity extends AppCompatActivity {
 
 
         attachTemperatureListener(databaseReference, uid);
+        userDataListener(databaseReference, uid);
+    }
+
+    public void userDataListener(DatabaseReference databaseReference, String uid){
+
+        databaseReference.child("Patients").child(uid).child("Data").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserAccount userData = dataSnapshot.getValue(UserAccount.class);
+                Log.d("USER CHANGE", "onDataChange: User data changed");
+                if (userData == null) {
+                    // TODO(): maybe do something
+                    return;
+                }
+
+                profilePicture = findViewById(R.id.profile_image);
+
+                /*
+                if( uri != null && !uri.isEmpty()) {
+                    profilePicture.setImageURI(Uri.parse(uri));
+                }
+                */
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void attachTemperatureListener(DatabaseReference databaseReference, String uid)

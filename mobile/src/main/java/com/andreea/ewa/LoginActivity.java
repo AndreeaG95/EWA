@@ -10,9 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,10 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
-import org.w3c.dom.Text;
-
-public class SignupActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LOGIN";
 
@@ -36,6 +33,7 @@ public class SignupActivity extends AppCompatActivity {
 
     // Firebase
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabaseUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +44,12 @@ public class SignupActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_login);
+
+        // TODO() Offline persistency.
+        //mDatabaseUsers = AppState.get().getDatabaseReference();
+       // mDatabaseUsers.child("Patients").keepSynced(true);
+
 
         email = ((TextInputLayout)findViewById(R.id.eEmail)).getEditText();
         password =  ((TextInputLayout)findViewById(R.id.ePassword)).getEditText();
@@ -113,7 +116,7 @@ public class SignupActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(SignupActivity.this, task.getException().getMessage(),
+                            Toast.makeText(LoginActivity.this, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                             password.setText("");
                             updateUI(null);
@@ -125,7 +128,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            Toast.makeText(SignupActivity.this, "Signed in.",
+            Toast.makeText(LoginActivity.this, "Signed in.",
                     Toast.LENGTH_SHORT).show();
            // tStatus.setText("Email user: " + user.getEmail());
             //tDetail.setText("Firebase user: " + user.getUid());

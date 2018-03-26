@@ -7,13 +7,15 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.andreea.ewa.healthPage.DoctorsActivity;
+import com.andreea.ewa.healthPage.MedicineActivity;
 import com.google.firebase.database.DatabaseReference;
 
 import java.text.SimpleDateFormat;
@@ -25,7 +27,7 @@ import java.util.Date;
  */
 public class HealthFragment extends Fragment implements View.OnClickListener{
 
-    private CardView cTemperature, heartRate, cMedicine;
+    private CardView cTemperature, heartRate, cMedicine, cDoctors;
     private Button okTemp, cancelTemp;
     private EditText temperatureVal;
 
@@ -49,11 +51,14 @@ public class HealthFragment extends Fragment implements View.OnClickListener{
     public void onViewCreated(View view, Bundle savedInstanceState){
         cTemperature = getView().findViewById(R.id.temperature);
         cMedicine = getView().findViewById(R.id.medicine);
+        cDoctors = getView().findViewById(R.id.doctorCard);
+
         heartRate = getView().findViewById(R.id.heartRate);
         okTemp = getView().findViewById(R.id.okTemp);
 
         cTemperature.setOnClickListener(this);
         cMedicine.setOnClickListener(this);
+        cDoctors.setOnClickListener(this);
 
         mCamera = getCameraInstance(); // Create an instance of Camera
     }
@@ -109,12 +114,6 @@ public class HealthFragment extends Fragment implements View.OnClickListener{
     }
 
 
-    private void getDoctor(View view){
-        if(!MainActivity.haveNetworkConnection()){
-            Toast.makeText(view.getContext(), "Internet connection required", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -124,11 +123,14 @@ public class HealthFragment extends Fragment implements View.OnClickListener{
             case R.id.heartRate:
                 break;
             case R.id.medicine:
+                Log.d("HOLA", "WTF");
                 Intent intent = new Intent(getContext(), MedicineActivity.class);
                 this.startActivity(intent);
                 break;
-            case R.id.doctor:
-                getDoctor(v);
+            case R.id.doctorCard:
+                Log.d("HOLA", "WTF 22222");
+                Intent intentDoctor = new Intent(getContext(), DoctorsActivity.class);
+                this.startActivity(intentDoctor);
                 break;
         }
     }

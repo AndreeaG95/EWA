@@ -22,6 +22,7 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:src="@mipmap/user"
+            android:onClick="onClick"
             android:layout_gravity="center_horizontal"
             app:civ_border_width="2dp"
             app:civ_border_color="#FF000000"/>
@@ -99,7 +100,7 @@
                 android:text="Name" />
 
             <EditText
-                android:id="@+id/eSurname"
+                android:id="@+id/ePhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
@@ -110,7 +111,7 @@
                 android:text="0711223344" />
 
             <EditText
-                android:id="@+id/editText5"
+                android:id="@+id/eHeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -118,10 +119,10 @@
                 android:layout_row="6"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name" />
+                android:hint="cm"/>
 
             <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/eWeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -129,7 +130,7 @@
                 android:layout_row="7"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name" />
+                android:hint="kg" />
 
             <EditText
                 android:id="@+id/eBirthday"
@@ -146,8 +147,17 @@
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_row="5" />
-
         </GridLayout>
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/roundbutton"
+            android:text="SAVE"
+            android:onClick="onClick"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

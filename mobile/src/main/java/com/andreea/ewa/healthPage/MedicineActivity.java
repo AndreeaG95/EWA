@@ -1,7 +1,6 @@
-package com.andreea.ewa;
+package com.andreea.ewa.healthPage;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.andreea.ewa.AppState;
+import com.andreea.ewa.R;
 import com.andreea.ewa.medicine.Medicine;
 import com.andreea.ewa.medicine.MedicineAdapter;
 import com.google.firebase.database.ChildEventListener;
@@ -27,10 +28,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-/**
- * Created by Andrei on 1/11/2018.
- */
 
 public class MedicineActivity extends AppCompatActivity {
 

@@ -2,8 +2,7 @@ package com.andreea.ewa.medicine;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.provider.ContactsContract;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Andrei on 1/11/2018.
- */
 
 public class MedicineAdapter extends ArrayAdapter<Medicine> {
     private Context context;
@@ -35,6 +31,7 @@ public class MedicineAdapter extends ArrayAdapter<Medicine> {
         this.medicines = medicines;
         this.layoutResID = layoutResourceID;
     }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ItemHolder itemHolder;
@@ -65,7 +62,7 @@ public class MedicineAdapter extends ArrayAdapter<Medicine> {
         itemHolder.tIndex.setText(String.valueOf(position + 1));
         itemHolder.tName.setText(hItem.getName());
         //itemHolder.lHeader.setBackgroundColor(PaymentType.getColorFromPaymentType(hItem.getType()));
-        itemHolder.lHeader.setBackgroundColor(Color.rgb(50, 150, 50));
+        itemHolder.lHeader.setBackgroundColor(ContextCompat.getColor(context, R.color.primaryLightColor));
 
         itemHolder.imageButton.setOnClickListener(new View.OnClickListener() {
 

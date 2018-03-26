@@ -1,9 +1,5 @@
 package com.andreea.ewa.medicine;
 
-/**
- * Created by Andrei on 1/11/2018.
- */
-
 public class Medicine implements Comparable<Medicine>{
 
     public long last_ts;
