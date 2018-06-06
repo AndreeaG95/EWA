@@ -20,7 +20,11 @@ import android.view.WindowManager;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.app.PendingIntent;
+import android.app.AlarmManager;
+import android.util.Log;
 
+import com.andreea.ewa.BradcastReceiver.DailyQuizAlarm;
 import com.andreea.ewa.healthPage.Temperature;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Calendar;
 
 /**
  * Created by andreeagb.
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private static final List<Temperature> temperatures = new ArrayList<>();
     private static ConnectivityManager cm;
 
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -66,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        // Set up offline persistency.
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        Log.d("MAIN_ACTIVITY", "Created main activity");
+        registerAlarm();
 
         // setup authentication
         mAuth = FirebaseAuth.getInstance();
@@ -85,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
                 if (user != null) {
                     //TextView tLoginDetail = (TextView) findViewById(R.id.tLoginDetail);
                     //TextView tUser = (TextView) findViewById(R.id.tUser);
-                   // tLoginDetail.setText("Firebase ID: " + user.getUid());
-                   // tUser.setText("Email: " + user.getEmail());
+                    // tLoginDetail.setText("Firebase ID: " + user.getUid());
+                    // tUser.setText("Email: " + user.getEmail());
 
                     AppState.get().setUserId(user.getUid());
                     attachDBListeners(user.getUid());
@@ -129,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         final AlertDialog alert = builder.create();
-         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         edit.setVisibility(View.INVISIBLE);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -142,10 +147,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case(R.id.logOut):
+                    case (R.id.logOut):
                         alert.show();
                         break;
-                    case(R.id.account):
+                    case (R.id.account):
                         edit.setVisibility(View.VISIBLE);
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new AccountFragment());
@@ -154,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                         menuItem.setChecked(true);
                         drawerLayout.closeDrawers();
                         break;
-                    case(R.id.settings):
+                    case (R.id.settings):
                         edit.setVisibility(View.INVISIBLE);
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new SettingsFragment());
@@ -163,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                         menuItem.setChecked(true);
                         drawerLayout.closeDrawers();
                         break;
-                    case(R.id.health):
+                    case (R.id.health):
                         edit.setVisibility(View.INVISIBLE);
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         Fragment health = new HealthFragment();
@@ -173,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                         menuItem.setChecked(true);
                         drawerLayout.closeDrawers();
                         break;
-                    case(R.id.appointments):
+                    case (R.id.appointments):
                         edit.setVisibility(View.INVISIBLE);
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new AppointmentsFragment());
@@ -198,6 +203,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void registerAlarm() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.HOUR_OF_DAY, 00);
+        calendar.set(calendar.MINUTE, 17);
+        calendar.set(calendar.SECOND, 0);
+
+        Intent newIntent = new Intent(MainActivity.this, DailyQuizAlarm.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager)this.getSystemService(this.ALARM_SERVICE);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+
+    }
+
     private void attachDBListeners(String uid) {
         // setup firebase database
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -209,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         userDataListener(databaseReference, uid);
     }
 
-    public void userDataListener(DatabaseReference databaseReference, String uid){
+    public void userDataListener(DatabaseReference databaseReference, String uid) {
 
         databaseReference.child("Patients").child(uid).child("Data").addValueEventListener(new ValueEventListener() {
             @Override
@@ -237,8 +255,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void attachTemperatureListener(DatabaseReference databaseReference, String uid)
-    {
+    public void attachTemperatureListener(DatabaseReference databaseReference, String uid) {
         temperatures.clear();
 
         databaseReference.child("Patients").child(uid).child("Temperature").addChildEventListener(new ChildEventListener() {
@@ -247,15 +264,15 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 // Temperature update.
                 try {
-                        String date = dataSnapshot.getKey();
-                        double value2;
-                        if (dataSnapshot.getValue() instanceof Long)
-                            value2 = ((Long)dataSnapshot.getValue()).doubleValue();
-                        else
-                            value2 = (double) dataSnapshot.getValue();
-                        temperatures.add(new Temperature(date, value2));
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    String date = dataSnapshot.getKey();
+                    double value2;
+                    if (dataSnapshot.getValue() instanceof Long)
+                        value2 = ((Long) dataSnapshot.getValue()).doubleValue();
+                    else
+                        value2 = (double) dataSnapshot.getValue();
+                    temperatures.add(new Temperature(date, value2));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -298,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static List<Temperature> getTemperatures(){
+    public static List<Temperature> getTemperatures() {
         return temperatures;
     }
 
@@ -318,8 +335,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Open menu item from toggle.
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        if(toggle.onOptionsItemSelected(item))
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item))
             return true;
 
         return super.onOptionsItemSelected(item);
@@ -344,8 +361,8 @@ public class MainActivity extends AppCompatActivity {
         return haveConnectedWifi || haveConnectedMobile;
     }
 
-    public void mainClick(View view){
-        switch (view.getId()){
+    public void mainClick(View view) {
+        switch (view.getId()) {
             case R.id.editButton:
                 Intent intent = new Intent(this, EditAccountActivity.class);
                 this.startActivity(intent);

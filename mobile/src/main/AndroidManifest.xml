@@ -4,9 +4,10 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.BODY_SENSORS" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:allowBackup="true"
@@ -25,8 +26,13 @@
         </activity>
         <activity android:name=".ForgotPasswordActivity">
         </activity>
+        <activity android:name=".heartRate.HeartRateMonitor">
+        </activity>
         <activity android:name=".EditAccountActivity">
         </activity>
+        <activity android:name=".heartRate.HeartRateMenu">
+        </activity>
+        <receiver android:name=".BradcastReceiver.DailyQuizAlarm"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

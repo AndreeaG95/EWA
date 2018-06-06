@@ -1,7 +1,14 @@
 package com.andreea.ewa.healthPage;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.andreea.ewa.AppState;
+import com.andreea.ewa.MainActivity;
 import com.andreea.ewa.R;
 import com.andreea.ewa.medicine.Medicine;
 import com.andreea.ewa.medicine.MedicineAdapter;
@@ -35,6 +43,8 @@ public class MedicineActivity extends AppCompatActivity {
     private ListView listMedicine;
     private List<Medicine> medicines = new ArrayList<>();
     private DatabaseReference databaseReference;
+
+    private List<AlarmManager> alarmManagers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +119,9 @@ public class MedicineActivity extends AppCompatActivity {
 
     }
 
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
+
     public void getMedicine(View v){
         final AlertDialog.Builder mBuilder = new AlertDialog.Builder(v.getContext());
         final View temperatureView = getLayoutInflater().inflate(R.layout.add_medicine_layout, null);
@@ -148,12 +161,41 @@ public class MedicineActivity extends AppCompatActivity {
                 Map<String, Object> childUpdates = new HashMap<>();
                 childUpdates.put("/Patients/" + AppState.getUserId() +"/Medicine/" + name, values);
 
+                alarmMgr = (AlarmManager)v.getContext().getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(v.getContext(), AlarmReceiver.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+                alarmIntent = PendingIntent.getActivity(v.getContext(), 0, intent, 0);
+
+                int alarmType = AlarmManager.ELAPSED_REALTIME_WAKEUP;
+                final int FIFTEEN_SEC_MILLIS = 30000;
+
+                alarmMgr.setRepeating(alarmType, SystemClock.elapsedRealtime() + FIFTEEN_SEC_MILLIS,
+                        FIFTEEN_SEC_MILLIS, alarmIntent);
+
+                Log.i("RepeatingAlarmFragment", "Alarm set.");
+
                 databaseReference.updateChildren(childUpdates);
                 dialog.cancel();
+
             }
         });
+
     }
 
+    // Place where we build our notification.
+    public class AlarmReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            Log.i("RepeatingAlarmFragment", "Alarm received.");
+
+            Intent notificationClicked = new Intent(context, MedicineActivity.class);
+            notificationClicked.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }
+
+    }
 
     public void clicked(View view) {
         switch (view.getId()) {
@@ -162,4 +204,5 @@ public class MedicineActivity extends AppCompatActivity {
                 break;
         }
     }
+
 }

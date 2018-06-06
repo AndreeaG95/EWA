@@ -10,7 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.Spinner;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -37,7 +43,27 @@ public class AppointmentsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         calendarView = view.findViewById(R.id.simpleCalendarView);
+
+        calendarView.setMinDate(calendarView.getDate());
         timeSpinner = view.findViewById(R.id.spinnerTime);
+
+        // Get doctors appointments.
+        DatabaseReference doctorRef = AppState.get().getDatabaseReference().child("Patients").child(AppState.getUserId()).child("doctor");
+        doctorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String doctor =  dataSnapshot.getValue(String.class);
+                DatabaseReference user_reference = AppState.get().getDatabaseReference().child("Doctors").child(doctor);
+
+                //
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
@@ -46,6 +72,7 @@ public class AppointmentsFragment extends Fragment {
                                             int dayOfMonth) {
 
                 List<String> timeslots = new ArrayList<String>();
+
 
                 // TODO: need to check availible timeslots.
                 timeslots.add("8:00");
