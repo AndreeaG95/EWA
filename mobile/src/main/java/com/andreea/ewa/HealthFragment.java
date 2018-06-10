@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.andreea.ewa.dailyCheck.DailyCheck;
 import com.andreea.ewa.healthPage.DoctorsActivity;
 import com.andreea.ewa.healthPage.MedicineActivity;
 import com.andreea.ewa.heartRate.HeartRateMenu;
@@ -31,7 +32,7 @@ import android.support.design.widget.Snackbar;
  */
 public class HealthFragment extends Fragment implements View.OnClickListener{
 
-    private CardView cTemperature, cHeartRate, cMedicine, cDoctors;
+    private CardView cTemperature, cHeartRate, cMedicine, cDoctors, cDailyCheck;
     private Button okTemp, cancelTemp;
     private EditText temperatureVal;
     private View mLayout;
@@ -58,6 +59,7 @@ public class HealthFragment extends Fragment implements View.OnClickListener{
         cMedicine = getView().findViewById(R.id.medicine);
         cDoctors = getView().findViewById(R.id.doctorCard);
         cHeartRate = getView().findViewById(R.id.heartRate);
+        cDailyCheck = getView().findViewById(R.id.daily_check);
 
         okTemp = getView().findViewById(R.id.okTemp);
 
@@ -65,6 +67,7 @@ public class HealthFragment extends Fragment implements View.OnClickListener{
         cMedicine.setOnClickListener(this);
         cDoctors.setOnClickListener(this);
         cHeartRate.setOnClickListener(this);
+        cDailyCheck.setOnClickListener(this);
 
         mCamera = getCameraInstance(); // Create an instance of Camera
         mLayout =  getView().findViewById(R.id.health_layout);
@@ -139,6 +142,10 @@ public class HealthFragment extends Fragment implements View.OnClickListener{
             case R.id.doctorCard:
                 Intent intentDoctor = new Intent(getContext(), DoctorsActivity.class);
                 this.startActivity(intentDoctor);
+                break;
+            case R.id.daily_check:
+                Intent intentDailyCheck = new Intent(getContext(), DailyCheck.class);
+                this.startActivity(intentDailyCheck);
                 break;
         }
     }

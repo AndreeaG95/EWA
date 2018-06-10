@@ -32,6 +32,8 @@
         </activity>
         <activity android:name=".heartRate.HeartRateMenu">
         </activity>
+        <activity android:name=".dailyCheck.DailyCheck">
+        </activity>
         <receiver android:name=".BradcastReceiver.DailyQuizAlarm"/>
         <activity android:name=".MainActivity">
             <intent-filter>

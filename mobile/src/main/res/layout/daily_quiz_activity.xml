@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryDarkColor"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/quizQuestion"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:alpha="0.8"
+        android:text="This is a test suject: plese enter data"
+        android:textAlignment="center"
+        android:textColor="#FFF"
+        android:textSize="24dp">
+
+    </TextView>
+    <Button
+        android:id="@+id/startQuiz"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="18dp"
+        android:alpha="0.5"
+        android:background="@drawable/roundbuttonwhite"
+        android:gravity="center"
+        android:text="Start"
+        android:textColor="@color/primaryLightColor">
+
+    </Button>
+
+    <Button
+        android:id="@+id/nextQuestion"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/startQuiz"
+        android:layout_gravity="center"
+        android:layout_marginStart="13dp"
+        android:layout_toEndOf="@+id/startQuiz"
+        android:alpha="0.5"
+        android:background="@drawable/roundbuttonwhite"
+        android:gravity="center"
+        android:text="Next"
+        android:textColor="@color/primaryLightColor">
+
+    </Button>
+
+
+    <com.gigamole.library.PulseView
+        android:id="@+id/pulseView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        app:pv_alpha="100"
+        app:pv_color="#FFF"
+        app:pv_icon="@drawable/ic_heartwhite"
+        app:pv_icon_height="70dp"
+        app:pv_icon_width="70dp"
+        app:pv_interpolator="@interpolator/mr_linear_out_slow_in"
+        app:pv_measure="width"
+        app:pv_spawn_period="500" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/startQuiz"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/primaryLightColor"
+        android:shadowColor="@color/primaryLightColor"
+        android:textColorLink="@color/primaryLightColor"
+        android:ems="10"
+        android:inputType="numberDecimal" />
+
+</android.widget.RelativeLayout>
