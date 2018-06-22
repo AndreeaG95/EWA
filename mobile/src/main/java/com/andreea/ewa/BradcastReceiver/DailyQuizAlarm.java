@@ -20,7 +20,6 @@ public class DailyQuizAlarm extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        long when = System.currentTimeMillis();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
         Intent notificationIntent = new Intent(context, MainActivity.class);
@@ -28,16 +27,14 @@ public class DailyQuizAlarm extends BroadcastReceiver {
 
         // Activity that will be triggered when user clicks the notification.
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         Uri alarmSound = RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_NOTIFICATION);
-
         Builder builde = new Builder(context).setSmallIcon(R.mipmap.care)
                                                 .setContentTitle("Daily quiz")
                                                 .setContentText("Don't forget to update your daily health status.")
                                                 .setSound(alarmSound)
                                                 .setAutoCancel(true)
-                                                .setWhen(when)
-                                                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+                                                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                                                .setContentIntent(pendingIntent);
         notificationManager.notify(0, builde.build());
     }
 }

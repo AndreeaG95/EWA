@@ -162,7 +162,6 @@ public class HeartRateMonitor extends AppCompatActivity {
             int height = size.height;
 
             int imgAvg = ImageProcessing.decodeYUV420SPtoRedAvg(data.clone(), height, width);
-            // Log.i(TAG, "imgAvg="+imgAvg);
             if (imgAvg == 0 || imgAvg == 255) {
                 processing.set(false);
                 return;
@@ -170,6 +169,7 @@ public class HeartRateMonitor extends AppCompatActivity {
 
             int averageArrayAvg = 0;
             int averageArrayCnt = 0;
+            /* Avarage the 4 frames. */
             for (int i = 0; i < averageArray.length; i++) {
                 if (averageArray[i] > 0) {
                     averageArrayAvg += averageArray[i];
@@ -179,6 +179,7 @@ public class HeartRateMonitor extends AppCompatActivity {
 
             int rollingAverage = (averageArrayCnt > 0) ? (averageArrayAvg / averageArrayCnt) : 0;
             TYPE newType = currentType;
+            /* Check if we have a new heart beat. */
             if (imgAvg < rollingAverage) {
                 newType = TYPE.RED;
                 if (newType != currentType) {
@@ -189,6 +190,7 @@ public class HeartRateMonitor extends AppCompatActivity {
                 newType = TYPE.GREEN;
             }
 
+            /* We averaged 4 frames, need to restart indexing. */
             if (averageIndex == averageArraySize) averageIndex = 0;
             averageArray[averageIndex] = imgAvg;
             averageIndex++;
@@ -196,14 +198,16 @@ public class HeartRateMonitor extends AppCompatActivity {
             // Transitioned from one state to another to the same
             if (newType != currentType) {
                 currentType = newType;
-                //image.postInvalidate();
             }
 
             long endTime = System.currentTimeMillis();
             double totalTimeInSecs = (endTime - startTime) / 1000d;
+            /* We have a chunk of 10ms. */
             if (totalTimeInSecs >= 10) {
                 double bps = (beats / totalTimeInSecs);
                 int dpm = (int) (bps * 60d);
+
+                /* Incorrect measurements. */
                 if (dpm < 30 || dpm > 180) {
                     startTime = System.currentTimeMillis();
                     beats = 0;

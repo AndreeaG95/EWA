@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gigamole.library.PulseView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -46,17 +47,10 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        // TODO() Offline persistency.
-        //mDatabaseUsers = AppState.get().getDatabaseReference();
-       // mDatabaseUsers.child("Patients").keepSynced(true);
-
-
         email = ((TextInputLayout)findViewById(R.id.eEmail)).getEditText();
         password =  ((TextInputLayout)findViewById(R.id.ePassword)).getEditText();
-       // tStatus =  findViewById(R.id.tStatus);
-        //tDetail =  findViewById(R.id.tDetail);
-
         mAuth = FirebaseAuth.getInstance();
+
 
     }
 

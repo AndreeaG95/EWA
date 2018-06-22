@@ -5,11 +5,19 @@
 
     android:background="@color/secondaryColor">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/doctors3"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="67dp"
+        android:layout_marginVertical="24dp"
+        android:fontFamily="@font/alegreya_sans_sc_thin"
+        android:text="Healthlog"
+        android:textColor="@color/primaryDarkColor"
+        android:textSize="28dp"
+        android:textStyle="bold"></TextView>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/eEmail"

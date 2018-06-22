@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.os.SystemClock;
+import android.widget.EditText;
 
 /**
  * Created by andreeagb on 6/7/2018.
@@ -20,7 +20,9 @@ public class DailyCheck extends AppCompatActivity {
     private PulseView pulseView;
     private Button bStartQuiz,bNext;
     private TextView vQuestion;
+    private EditText eTemperature;
     private int state;
+    private android.support.v4.app.FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,9 @@ public class DailyCheck extends AppCompatActivity {
         bStartQuiz = findViewById(R.id.startQuiz);
         vQuestion = findViewById(R.id.quizQuestion);
         bNext = findViewById(R.id.nextQuestion);
+        eTemperature = findViewById(R.id.editTemperatre);
 
+        eTemperature.setVisibility(View.INVISIBLE);
         bNext.setVisibility(View.INVISIBLE);
         vQuestion.setVisibility(View.INVISIBLE);
         pulseView.startPulse();
@@ -70,16 +74,24 @@ public class DailyCheck extends AppCompatActivity {
                 case R.id.nextQuestion:
                     if(state == 2) {
                         /* Enter temperature case*/
+                        eTemperature.setVisibility(View.VISIBLE);
                         pulseView.startPulse();
                         vQuestion.setText("Please enter temperature");
                         state = 3;
                     }else if(state == 3){
-                        vQuestion.setText("Please select symptoms");
+                        eTemperature.setVisibility(View.INVISIBLE);
+                        vQuestion.setVisibility(View.INVISIBLE);
                         bNext.setText("Finish");
+                        pulseView.setVisibility(View.INVISIBLE);
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_quiz_container, new SymptomsFragment());
+                        fragmentTransaction.commit();
                         state = 4;
-                    }else{
+                    }else if (state == 4){
                         /* Sumbmit data and close activity. */
 
+                    }else{
+                        // Handle error.
                     }
                 default:
                     // TODO Auto-generated method stub
@@ -87,4 +99,13 @@ public class DailyCheck extends AppCompatActivity {
             }
         }
     };
+   float button = (float) 0.5;
+    public void symptonClicked(View view) {
+
+        if(view.getAlpha() == 0.5) {
+            view.setAlpha(1);
+        }else{
+            view.setAlpha(button);
+        }
+    }
 }

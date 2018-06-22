@@ -22,7 +22,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.app.PendingIntent;
 import android.app.AlarmManager;
-import android.util.Log;
+import android.os.Build;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 
 import com.andreea.ewa.BradcastReceiver.DailyQuizAlarm;
 import com.andreea.ewa.healthPage.Temperature;
@@ -45,6 +47,7 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String CHANNEL_ID = "1234";
     //UI.
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Log.d("MAIN_ACTIVITY", "Created main activity");
+        createNotificationChannel();
         registerAlarm();
 
         // setup authentication
@@ -88,11 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
-                    //TextView tLoginDetail = (TextView) findViewById(R.id.tLoginDetail);
-                    //TextView tUser = (TextView) findViewById(R.id.tUser);
-                    // tLoginDetail.setText("Firebase ID: " + user.getUid());
-                    // tUser.setText("Email: " + user.getEmail());
-
                     AppState.get().setUserId(user.getUid());
                     attachDBListeners(user.getUid());
                 } else {
@@ -203,17 +202,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     private void registerAlarm() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.HOUR_OF_DAY, 00);
-        calendar.set(calendar.MINUTE, 17);
+        calendar.set(calendar.HOUR_OF_DAY, 19);
+        calendar.set(calendar.MINUTE, 0);
         calendar.set(calendar.SECOND, 0);
 
         Intent newIntent = new Intent(MainActivity.this, DailyQuizAlarm.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager)this.getSystemService(this.ALARM_SERVICE);
         am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-
     }
 
     private void attachDBListeners(String uid) {
@@ -307,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // get data from intent
                 String user = data.getStringExtra("user");
-                // ...
             } else if (resultCode == RESULT_CANCELED) {
                 // data was not retrieved
                 finish();
@@ -369,4 +382,5 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
 }

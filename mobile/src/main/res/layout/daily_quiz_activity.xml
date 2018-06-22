@@ -5,6 +5,12 @@
     android:background="@color/primaryDarkColor"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <FrameLayout
+        android:id="@+id/main_quiz_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
     <TextView
         android:id="@+id/quizQuestion"
         android:layout_width="250dp"
@@ -68,16 +74,17 @@
         app:pv_spawn_period="500" />
 
     <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
+        android:id="@+id/editTemperatre"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/startQuiz"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:textColor="@color/primaryLightColor"
-        android:shadowColor="@color/primaryLightColor"
-        android:textColorLink="@color/primaryLightColor"
+        android:layout_marginBottom="18dp"
+        android:textSize="36dp"
         android:ems="10"
-        android:inputType="numberDecimal" />
+        android:inputType="numberDecimal"
+        android:shadowColor="@color/primaryTextColor"
+        android:textColor="@color/primaryTextColor"
+        android:textColorLink="@color/primaryTextColor" />
 
 </android.widget.RelativeLayout>

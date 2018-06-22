@@ -1,0 +1,206 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_symptoms"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryDarkColor">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.demotxt.droidsrce.homedashboard.Home"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="@color/primaryDarkColor"
+        android:id="@+id/ll">
+
+
+        <TextView
+            android:id="@+id/quizQuestion"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="15dp"
+            android:alpha="0.8"
+            android:text="Symptoms"
+            android:textAlignment="center"
+            android:textColor="#FFF"
+            android:textSize="24dp">
+        </TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="5dp"
+            android:clipToPadding="false">
+
+            <Button
+                android:id="@+id/headache"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="13dp"
+                android:padding="10dp"
+                android:alpha="0.5"
+                android:background="@drawable/roundbuttonwhite"
+                android:gravity="center"
+                android:text="Headache"
+                android:onClick="symptonClicked"
+                android:textAllCaps="false"
+                android:textColor="@color/primaryLightColor">
+            </Button>
+
+            <Button
+                android:id="@+id/cramps"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="13dp"
+                android:padding="10dp"
+                android:alpha="0.5"
+                android:background="@drawable/roundbuttonwhite"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:text="Cramps"
+                android:onClick="symptonClicked"
+                android:textColor="@color/primaryLightColor">
+            </Button>
+
+            <Button
+                android:id="@+id/pain"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="13dp"
+                android:padding="10dp"
+                android:textAllCaps="false"
+                android:alpha="0.5"
+                android:background="@drawable/roundbuttonwhite"
+                android:gravity="center"
+                android:text="Muscular pain"
+                android:onClick="symptonClicked"
+                android:textColor="@color/primaryLightColor">
+            </Button>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="5dp"
+            android:clipToPadding="false">
+
+            <Button
+                android:id="@+id/chills"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="13dp"
+                android:padding="10dp"
+                android:alpha="0.5"
+                android:background="@drawable/roundbuttonwhite"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:text="Chills"
+                android:onClick="symptonClicked"
+                android:textColor="@color/primaryLightColor">
+            </Button>
+
+            <Button
+                android:id="@+id/diarrhea"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="13dp"
+                android:padding="10dp"
+                android:alpha="0.5"
+                android:background="@drawable/roundbuttonwhite"
+                android:gravity="center"
+                android:text="Diarrhea"
+                android:textAllCaps="false"
+                android:onClick="symptonClicked"
+                android:textColor="@color/primaryLightColor">
+            </Button>
+
+            <Button
+                android:id="@+id/insomnia"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="13dp"
+                android:padding="10dp"
+                android:alpha="0.5"
+                android:background="@drawable/roundbuttonwhite"
+                android:gravity="center"
+                android:text="Insomnia"
+                android:textAllCaps="false"
+                android:onClick="symptonClicked"
+                android:textColor="@color/primaryLightColor">
+            </Button>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="5dp"
+            android:clipToPadding="false">
+
+            <Button
+                android:id="@+id/cought"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="13dp"
+                android:padding="10dp"
+                android:alpha="0.5"
+                android:background="@drawable/roundbuttonwhite"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:text="Cough"
+                android:onClick="symptonClicked"
+                android:textColor="@color/primaryLightColor">
+            </Button>
+
+            <Button
+                android:id="@+id/chest"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="13dp"
+                android:padding="10dp"
+                android:alpha="0.5"
+                android:background="@drawable/roundbuttonwhite"
+                android:gravity="center"
+                android:text="Chest pain"
+                android:textAllCaps="false"
+                android:onClick="symptonClicked"
+                android:textColor="@color/primaryLightColor">
+            </Button>
+
+            <Button
+                android:id="@+id/vomiting"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="13dp"
+                android:padding="10dp"
+                android:alpha="0.5"
+                android:background="@drawable/roundbuttonwhite"
+                android:gravity="center"
+                android:text="Vomiting"
+                android:textAllCaps="false"
+                android:onClick="symptonClicked"
+                android:textColor="@color/primaryLightColor">
+            </Button>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
